@@ -2,6 +2,8 @@ module github.com/artefactual-labs/gearmin
 
 go 1.20
 
+require github.com/dolmen-go/contextio v1.0.0
+
 // Test dependencies.
 require (
 	github.com/google/go-cmp v0.6.0

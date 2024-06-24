@@ -7,6 +7,8 @@ import (
 	"net"
 	"sync"
 	"time"
+
+	"github.com/dolmen-go/contextio"
 )
 
 type event struct {
@@ -163,7 +165,7 @@ func (se *session) handleConnection(ctx context.Context, s *Server, conn net.Con
 		writer(conn, outbox)
 	}()
 
-	r := bufio.NewReaderSize(conn, 256*1024)
+	r := bufio.NewReaderSize(contextio.NewReader(ctx, conn), 256*1024)
 	// todo:1. reuse event's result channel, create less garbage.
 	// 2. heavily rely on goroutine switch, send reply in EventLoop can make it faster, but logic is not that clean
 	// so i am not going to change it right now, maybe never
