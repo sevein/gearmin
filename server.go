@@ -8,6 +8,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+	"os"
+	"fmt"
 )
 
 type Server struct {
@@ -371,8 +373,11 @@ func (s *Server) Stop() {
 		return
 	}
 	s.quitOnce.Do(func() {
+		fmt.Fprintln(os.Stderr, "closing channel")
 		close(s.quit)
+		fmt.Fprintln(os.Stderr, "closing listeners")
 		s.ln.Close()
+		fmt.Fprintln(os.Stderr, "wg.Wait")
 		s.wg.Wait()
 	})
 }
